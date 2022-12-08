@@ -1,0 +1,45 @@
+.layout-dashboard {
+  background-image: url('../../../assets/landing/AdobeStock_455473197.jpeg') !important;
+
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+
+  .wrap-content {
+    margin-top: 100px !important;
+  }
+
+  .content-ant {
+    padding: 20px !important;
+    border: 2px solid #fff;
+    border-radius: 12px !important;
+    height: 80vh;
+    flex: none !important;
+    overflow-y: scroll;
+    position: relative;
+  }
+
+  .feature-tab {
+    color: #fff;
+    display: flex;
+    margin-left: 100px;
+    .platform {
+      padding: 15px 30px;
+      background-color: rgba(1, 1, 1, 0.3);
+      border-top-right-radius: 17px;
+      border-top-left-radius: 17px;
+      cursor: pointer;
+    }
+
+    .active {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .disable {
+      cursor: not-allowed;
+    }
+  }
+}
