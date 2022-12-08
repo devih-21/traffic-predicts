@@ -19,5 +19,12 @@ def get_data():
 @app.get("/info")
 def read_info():
   data = get_data()
-  print(data)
   return {"data": data}
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
+
+@app.get("/decision-tree-regressor")
+def handle_generate(reportId: str, timestamp: str):
+    return {"reportId": reportId, "timestamp": timestamp}
