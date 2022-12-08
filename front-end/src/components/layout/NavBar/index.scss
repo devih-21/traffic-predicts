@@ -1,0 +1,58 @@
+.nav-bar {
+  .brand {
+    display: flex;
+    justify-content: center;
+  }
+
+  .profile-user {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    .user-name {
+      color: #fff;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 10px;
+      font-weight: 700;
+    }
+
+    .direct-profile {
+      color: #fff;
+      text-align: center;
+      font-size: 16px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0);
+      transition: 0.3s;
+      cursor: pointer;
+      &:hover {
+        border-bottom: 2px solid #fff;
+      }
+    }
+  }
+
+  .nav-page {
+    margin-top: 30px;
+    .button-nav {
+      background-color: rgba(255, 255, 255, 0);
+      padding: 10px 70px;
+      border: 1px solid #fff;
+      border-radius: 100px;
+      color: rgba(255, 255, 255);
+      font-size: 20px;
+      font-weight: 700;
+      transition: 0.3s;
+      text-align: center;
+      margin-bottom: 15px;
+      cursor: pointer;
+      &:hover {
+        background-color: #fff;
+        color: #111;
+      }
+    }
+
+    .active {
+      background-color: #fff;
+      color: #111;
+    }
+  }
+}
