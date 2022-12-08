@@ -8,8 +8,8 @@ meta=MetaData()
 # connect_db = database_connection.connect()
 
 def connect_to_db():
-  database_username = 'root'
-  database_password = 'Devih.2001'
+  database_username = 'namnp'
+  database_password = '12345678'
   database_ip       = '127.0.0.1'
   database_name     = 'iot'
 

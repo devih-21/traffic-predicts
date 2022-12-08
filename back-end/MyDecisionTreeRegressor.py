@@ -1,25 +1,4 @@
-from typing import Union
-from fastapi import FastAPI
-from models.index import traffic_with_lag_data
-# from config.db import connect_db, database_connection
-from config.db import connect_to_db
-import pandas as pd
-import pickle
-class Node():
-    def __init__(self, feature_index=None, threshold=None, left=None, right=None, var_red=None, value=None):
-        ''' constructor ''' 
-        
-        # for decision node
-        
-        self.feature_index = feature_index
-        self.threshold = threshold
-        self.left = left
-        self.right = right
-        self.var_red = var_red
-        
-        # for leaf node
-        self.value = value
-
+from Node import Node
 import numpy as np
 class MyDecisionTreeRegressor():
     def __init__(self, min_samples_split=2, max_depth=2):
@@ -147,52 +126,3 @@ class MyDecisionTreeRegressor():
         
         preditions = [self.make_prediction(x, self.root) for x in X]
         return preditions
-
-class CustomUnpickler(pickle.Unpickler):
-
-    def find_class(self, module, name):
-        if name == 'MyDecisionTreeRegressor':
-            from MyDecisionTreeRegressor import MyDecisionTreeRegressor
-            return MyDecisionTreeRegressor
-        if name == 'Node':
-            from Node import Node
-            return Node
-        return super().find_class(module, name)
-
-app = FastAPI()
-connect = connect_to_db()
-
-@app.get("/")
-def read_root():
-  return {"Hello": "World"}
-
-def get_data():
-  data1 = pd.read_sql('SELECT distinct REPORT_ID, POINT_1_LAT, POINT_1_LNG FROM `traffic_with_lag_data`', con=connect)
-  return data1.to_dict(orient='REPORT_ID')
-
-@app.get("/info")
-def read_info():
-  data = get_data()
-  return {"data": data}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-  return {"item_id": item_id, "q": q}
-def get_model():
-  # with open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb') as f:
-  #   model = pickle.load(f)
-  model = CustomUnpickler(open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb')).load()
-  return model
-
-@app.get("/decision-tree-regressor")
-def handle_generate(reportId: str, timestamp: str):
-  # with open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb') as f:
-  #   model = pickle.load(f)
-  model = get_model()
-  df = pd.read_sql('SELECT * FROM `traffic_with_lag_data` WHERE REPORT_ID = %s AND TIMESTAMP = %s', con=connect, params=(reportId, timestamp))
-  actual = df['vehicleCount'].values[0]
-  cols = ['time','day_of_week','REPORT_ID','DISTANCE_IN_METERS','vehicleCount_lag_1','vehicleCount_lag_2','vehicleCount']
-  df = df[cols]
-  input_data = df.iloc[:, :-1].values
-  predict = model.predict(input_data)[0]
-  return {"actual": int(actual), "predict": float(predict)}
