@@ -1,11 +1,17 @@
 # traffic-predicts
 
 Frontend:
-/_install package_/
+
+#### install package
+
 yarn
-/_start app at port 3001_/
+
+#### start app at port 3001
+
 yarn start
 
-Frontend:
-/_start app at port 8000_/
+Backend:
+
+#### start app at port 8000
+
 uvicorn main:app --reload
