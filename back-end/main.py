@@ -78,11 +78,9 @@ def get_date(reportId: str):
 
 @app.get("/get_time_by_date")
 def get_date(reportId: str, date: str):
-  # data = pd.read_sql("SELECT time, timestamp FROM `traffic_with_lag_data` where REPORT_ID =" + reportId + " and date = "+  date, con=connect)
   data = pd.read_sql('SELECT time, timestamp FROM `traffic_with_lag_data` WHERE REPORT_ID = %s AND date = %s', con=connect, params=(reportId, date))
-  # data = pd.read_sql("SELECT * FROM `traffic_with_lag_data` where REPORT_ID =" + reportId , con=connect)
   print(data)
-  return {"data": data.values.tolist()}
+  return {"data": data.to_dict()}
 
 @app.get("/decision-tree-regressor")
 def handle_generate(reportId: str, timestamp: str):
