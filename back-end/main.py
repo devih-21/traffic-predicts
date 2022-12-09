@@ -32,7 +32,7 @@ app = FastAPI()
 connect = connect_to_db()
 origins = [
   "http://localhost",
-  "http://localhost:3000",
+  "http://localhost:3001",
   "http://localhost:8000"
 ]
 
@@ -44,22 +44,7 @@ app.add_middleware(
   allow_headers=["*"],
   expose_headers=["*"]
 )
-@app.get("/")
-def read_root():
-  return {"Hello": "World"}
 
-def get_data():
-  data1 = pd.read_sql('SELECT distinct REPORT_ID, POINT_1_LAT, POINT_1_LNG FROM `traffic_with_lag_data`', con=connect)
-  return data1.to_dict(orient='REPORT_ID')
-
-@app.get("/info")
-def read_info():
-  data = get_data()
-  return {"data": data}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-  return {"item_id": item_id, "q": q}
 def get_model():
   model = CustomUnpickler(open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb')).load()
   return model
@@ -71,6 +56,33 @@ def get_lasso_model():
 def get_knn_model():
   model = CustomUnpickler(open('models/MyKNNClassifier.sav', 'rb')).load()
   return model
+
+def get_data():
+  data = pd.read_sql('SELECT distinct REPORT_ID, POINT_1_LAT, POINT_1_LNG, POINT_2_LAT, POINT_2_LNG, POINT_1_STREET, POINT_2_STREET FROM `traffic_with_lag_data`', con=connect)
+  return data.to_dict(orient='REPORT_ID')
+
+@app.get("/")
+def read_root():
+  return {"Hello": "World"}
+
+
+@app.get("/info_map")
+def read_info():
+  data = get_data()
+  return {"data": data}
+
+@app.get("/get_date_by_report_id")
+def get_date(reportId: str):
+  data = pd.read_sql("SELECT distinct date FROM `traffic_with_lag_data` where REPORT_ID =" + reportId, con=connect)
+  return {"data": data}
+
+@app.get("/get_time_by_date")
+def get_date(reportId: str, date: str):
+  # data = pd.read_sql("SELECT time, timestamp FROM `traffic_with_lag_data` where REPORT_ID =" + reportId + " and date = "+  date, con=connect)
+  data = pd.read_sql('SELECT time, timestamp FROM `traffic_with_lag_data` WHERE REPORT_ID = %s AND date = %s', con=connect, params=(reportId, date))
+  # data = pd.read_sql("SELECT * FROM `traffic_with_lag_data` where REPORT_ID =" + reportId , con=connect)
+  print(data)
+  return {"data": data.values.tolist()}
 
 @app.get("/decision-tree-regressor")
 def handle_generate(reportId: str, timestamp: str):

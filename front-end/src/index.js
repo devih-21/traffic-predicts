@@ -17,16 +17,6 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './fonts/Brahma-Regular.ttf';
 
-Sentry.init({
-  dsn: 'https://12e822ac1cbe4ff19223b8cac1d43604@o4503947345526784.ingest.sentry.io/4503947346706432',
-  integrations: [new BrowserTracing()],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
-
 ReactDOM.render(
   <BrowserRouter>
     <App />
