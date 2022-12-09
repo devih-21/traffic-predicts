@@ -61,27 +61,19 @@ def read_info():
 def read_item(item_id: int, q: Union[str, None] = None):
   return {"item_id": item_id, "q": q}
 def get_model():
-  # with open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb') as f:
-  #   model = pickle.load(f)
   model = CustomUnpickler(open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb')).load()
   return model
 
 def get_lasso_model():
-  # with open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb') as f:
-  #   model = pickle.load(f)
   model = CustomUnpickler(open('models/MyLassoRegression.sav', 'rb')).load()
   return model
 
 def get_knn_model():
-  # with open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb') as f:
-  #   model = pickle.load(f)
   model = CustomUnpickler(open('models/MyKNNClassifier.sav', 'rb')).load()
   return model
 
 @app.get("/decision-tree-regressor")
 def handle_generate(reportId: str, timestamp: str):
-  # with open('models/MyDecisionTreeRegressorModelWithDOW.sav', 'rb') as f:
-  #   model = pickle.load(f)
   model = get_model()
   df = pd.read_sql('SELECT * FROM `traffic_with_lag_data` WHERE REPORT_ID = %s AND TIMESTAMP = %s', con=connect, params=(reportId, timestamp))
   actual = df['vehicleCount'].values[0]
