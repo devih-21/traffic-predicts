@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Layout, Drawer, Affix } from 'antd';
-import { apiChannelData } from '../../../api/channelData';
+import { apiChannelData } from '../../../api/getData';
 import Sidenav from '../NavBar/Sidenav';
 
 import './index.scss';

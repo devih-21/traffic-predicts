@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiChannelData } from '../../../api/channelData';
+import { apiChannelData } from '../../../api/getData';
 import { Menu, Avatar } from 'antd';
 import { NavLink, useLocation, useParams, useHistory } from 'react-router-dom';
 import profilavatar from '../../../assets/images/face-1.jpg';
