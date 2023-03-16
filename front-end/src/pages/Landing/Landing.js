@@ -87,7 +87,8 @@ export const Landing = () => {
 
   const submitForm = async (formData) => {
     setLoading(true);
-    const { reportId, model, date, time } = formData;
+    const model = 'Decision Tree Regressor';
+    const { reportId, date, time } = formData;
     const query = {
       reportId,
       timestamp: `${date} ${time < 10 ? '0' + time : time}:00:00`,
@@ -182,7 +183,7 @@ export const Landing = () => {
                 </Form.Item>
               )}
 
-              {timeSelected && (
+              {/* {timeSelected && (
                 <Form.Item
                   label="Chọn Model"
                   name="model"
@@ -202,8 +203,8 @@ export const Landing = () => {
                     </Option>
                   </Select>
                 </Form.Item>
-              )}
-              {modelSelected && (
+              )} */}
+              {timeSelected && (
                 <Form.Item
                   wrapperCol={{
                     offset: 12,
@@ -217,10 +218,24 @@ export const Landing = () => {
             </Form>
             {dataGen && (
               <>
-                <Title level={3}>Dữ liệu thật: {dataGen?.actual}</Title>
-                <Title level={3}>Dữ liệu dự đoán: {dataGen?.predict}</Title>
                 <Title level={3}>
-                  Tỉ lệ: {dataGen?.predict / dataGen?.actual}
+                  Dữ liệu phương tiện thật vào ngày {form.getFieldValue('date')}{' '}
+                  lúc {form.getFieldValue('time')}h:{' '}
+                  {dataGen?.actual.toFixed(2)}
+                </Title>
+                <Title level={3}>
+                  Dữ liệu phương tiện dự đoán vào ngày{' '}
+                  {form.getFieldValue('date')} lúc {form.getFieldValue('time')}
+                  h: {dataGen?.predict.toFixed(2)}
+                </Title>
+                <Title level={3}>
+                  Tỉ lệ chính xác:{' '}
+                  {(
+                    (Math.min(dataGen?.actual, dataGen?.predict) /
+                      Math.max(dataGen?.predict, dataGen?.actual)) *
+                    100
+                  ).toFixed(2)}
+                  %
                 </Title>
               </>
             )}
