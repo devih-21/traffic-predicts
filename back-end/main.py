@@ -26,6 +26,9 @@ class CustomUnpickler(pickle.Unpickler):
         if name == 'LassoRegression':
             from lassoregression import LassoRegression
             return LassoRegression
+        if name == 'K_Nearest_Neighbors_Classifier':
+            from knn import K_Nearest_Neighbors_Classifier
+            return K_Nearest_Neighbors_Classifier
         return super().find_class(module, name)
 
 app = FastAPI()
