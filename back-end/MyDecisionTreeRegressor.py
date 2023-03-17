@@ -8,11 +8,14 @@ class MyDecisionTreeRegressor():
         self.root = None
         
         # stopping conditions
+        # điều kiện dừng của train
         self.min_samples_split = min_samples_split
         self.max_depth = max_depth
         
     def build_tree(self, dataset, curr_depth=0):
         ''' recursive function to build the tree '''
+        ''' init tree theo đệ quy '''
+        
         
         X, Y = dataset[:,:-1], dataset[:,-1]
         num_samples, num_features = np.shape(X)
@@ -38,6 +41,7 @@ class MyDecisionTreeRegressor():
     
     def get_best_split(self, dataset, num_samples, num_features):
         ''' function to find the best split '''
+        ''' tính toán xem phân chia theo thế nào tốt nhất '''
         
         # dictionary to store the best split
         best_split = {}
@@ -69,6 +73,7 @@ class MyDecisionTreeRegressor():
     
     def split(self, dataset, feature_index, threshold):
         ''' function to split the data '''
+        ''' tách data ra làm 2 nút trái phải '''
         
         dataset_left = np.array([row for row in dataset if row[feature_index]<=threshold])
         dataset_right = np.array([row for row in dataset if row[feature_index]>threshold])
@@ -76,6 +81,7 @@ class MyDecisionTreeRegressor():
     
     def variance_reduction(self, parent, l_child, r_child):
         ''' function to compute variance reduction '''
+        ''' tính độ giảm phương sai '''
         
         weight_l = len(l_child) / len(parent)
         weight_r = len(r_child) / len(parent)
@@ -84,12 +90,14 @@ class MyDecisionTreeRegressor():
     
     def calculate_leaf_value(self, Y):
         ''' function to compute leaf node '''
+        ''' tính trung bình của nút lá '''
         
         val = np.mean(Y)
         return val
                 
     def print_tree(self, tree=None, indent=" "):
         ''' function to print the tree '''
+        ''' in ra cây '''
         
         if not tree:
             tree = self.root
@@ -113,6 +121,8 @@ class MyDecisionTreeRegressor():
         
     def make_prediction(self, x, tree):
         ''' function to predict new dataset '''
+        ''' dự đoán trên dataset mới theo đệ quy '''
+        
         
         if tree.value!=None: return tree.value
         feature_val = x[tree.feature_index]
@@ -123,6 +133,7 @@ class MyDecisionTreeRegressor():
     
     def predict(self, X):
         ''' function to predict a single data point '''
+        ''' dự đoán tại một điểm '''
         
         preditions = [self.make_prediction(x, self.root) for x in X]
         return preditions
